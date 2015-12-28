@@ -7,10 +7,16 @@ Should work with Firefox,Edge.
 
 Objective : get real sensation, without webgl lagging....
 
-= gameplay
+Gameplay
+--------
 
 Simulate a real quadcopter (mode 2) radio commande, with a gamepad-compatible
 joystick.
+
+* Left  joystick : up/down , horisontal rotation
+* Right joystick : forward/backward, left/right
+* button 0 : goto 0,0,0
+* button 1 : stop in-place ( speeds=0 )
 
 TODO
 ====
