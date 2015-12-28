@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Q</title>
+<style>
+body  {
+    background: #444;
+    color:#AAA;
+    overflow:hidden;
+}
+* { margin:0px;}
+div {font-size: 10px;}
+</style>
+</head>
+
+<body onunload="ws.close();">
+<center><h2>Quadcopter Simlator</h2></center>
+<hr>
+<div id='cv'  style="width:100%; height:600px; background: #EEE;">
+</div>
+<hr>
+<div id='typ'>--</div>
+<div id='pos'>--</div>
+<div id='mes'>--</div>
+</body>
+<!-- ======================== Evenements Joystick ====================== -->
+<script src="js/gamepad.js"></script>
+<script src="js/3dutils.js"></script>
+<script src="js/3dgame.js"></script>
+<script src="js/Detector.js"></script>
+<script src="js/three.js"></script>
+<script src="js/optimer_bold.typeface.js"></script>
+<script src="js/optimer_regular.typeface.js"></script>
+<script>
+
+function message(id) {
+ var node=document.getElementById(id)
+ var str="";
+ for (var i=1;i<arguments.length;i++) str+=arguments[i]+' ';
+ if (node) node.innerHTML=str;
+}
+
+// store gamepad events in boutons[] and mouseX/Y/Z/R
+
+var mouseX = 0, mouseY = 0, mouseZ = 0, mouseR=0 ;
+var posx=0,posy=200,posz=0, vx=0,vy=0, vz=0;
+var camera, scene;
+var webglRenderer;
+
+var ok=false;
+
+var boutons=[0,0,0,0,0,0,0,0,0,0,0,0];
+function doEvent(data) {
+ var z=data[0][1]-100,
+     r=data[0][0]-100,
+     y=data[0][3]-100,
+     x=data[0][2]-100;
+ boutons=data[1];
+ mouseX = x;
+ mouseY = y;   
+ mouseZ = z;
+ mouseR = r;
+ if ( boutons[0]==1) {  posx=0; posy=100; posz=0; }
+ if ( boutons[1]==1) {  vx=0; vy=0; vz=0;         }
+ message("pos","Pos=",x,'/',y,'/',z,'R',r , "events",JSON.stringify(data));
+}
+
+
+
+
+document.addEventListener('DOMContentLoaded', init_game());
+
+
+</script>
+</html>
