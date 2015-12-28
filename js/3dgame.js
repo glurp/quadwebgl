@@ -7,6 +7,7 @@ var init_game= function() {
     var FLOOR = 0;
     var container=cv;
     var player, geometry;
+    var subplayer;
     var windowHalfX = SCREEN_WIDTH / 2;
     var windowHalfY = SCREEN_HEIGHT  / 2;
     
@@ -66,26 +67,31 @@ var init_game= function() {
       
       for (var i=0;i<70;i++)   
         addbat(ar(-400,400),ar(-400,+400),     30,30,ar(30,80), ar(-32000,32000),0.9);
-     addbat(0,0,     1,1,4, 0xFFAAAA,1.0);
+      addbat(0,0,     1,1,4, 0xFFAAAA,1.0);
         
 
         
       //makeText(-200,470,0,5,"0 88XX 8 8 B D WM",0xA0A0A0,0.9,70,40) ;
       
-      // ================= Joueur , model en fichier OU OVNI...
-      if (true) {
-          player =  addbat(0,0,     6,4,1, 0xBB0000,1);
-      } else {
-          player = addMesh(new THREE.CylinderGeometry( 5, 1 ,20 ,30),
-             1.4,
-             -400,30,-400,
-             Math.PI/2.0,0,0,
-             new THREE.MeshPhongMaterial( { 
-                color: 0xFFAA00, specular: 0x101010, 
-                shininess: 30 , opacity: 1.0
-             })
-          );
+      // ================= Quadcopter
+
+      var mat=new THREE.MeshPhongMaterial( { color: 0xA0A0A0, specular: 0x555555, shininess: 30 , opacity: 0.9} );
+
+      player = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 1 ),  mat );
+      var sub1 = new THREE.Mesh( new THREE.CubeGeometry( 6, 2, 6 ),  mat);
+      player.add(sub1);
+
+      var a=[[-1,1,2,0x00FF00],[-1,-1,2,0x00FF00],[1,1,3,0xFF0055],[1,-1,3,0xFF0055]];
+      for (var i=0;i<a.length;i++) {
+         var sub2 = new THREE.Mesh( new THREE.CylinderGeometry( a[i][2], a[i][2] , 3),
+                      new THREE.MeshPhongMaterial( { 
+                      color: a[i][3], 
+                      specular: 0x555555, shininess: 30 , opacity: 0.9} ) );
+         sub2.position.set(a[i][0]*3,0,a[i][1]*3);
+         sub1.add(sub2);
       }
+      subplayer=sub1;
+      scene.add(player);
     }
 
     function animate() {
@@ -121,9 +127,9 @@ var init_game= function() {
       
       // ================ Camera : subjective
       
-      var camx= posx + (20*Math.cos(-rad_dir));
-      var camy= posy + 3 + 2*vy;
-      var camz= posz + (20*Math.sin(rad_dir));
+      var camx= posx + (40*Math.cos(-rad_dir));
+      var camy= posy + 9 + 2*vy;
+      var camz= posz + (40*Math.sin( rad_dir));
       camera.position.set(camx,camy,camz);
       camera.lookAt(player.position);
       webglRenderer.render( scene, camera );

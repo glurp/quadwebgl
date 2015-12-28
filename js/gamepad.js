@@ -13,17 +13,16 @@ var igamepad=0;
 function loop() {
  if (! gpok) {
      document.body.style.backgroundColor="#AA0000";
-     message("title","Joystick Absent");
+     message("title","No Gamepad...");
      var gps= (navigator.webkitGetGamepads && navigator.webkitGetGamepads()) || navigator.getGamepads();
-     message("title","Press PRESET1");
-     var gp=gps[0];
+     message("title","Number of Gamepad: "+ gps.length);   
      for (var i=0;i<gps.length;i++)
        if (gps[i].axes && gps[i].buttons && gps[i].axes.length>=4 && gps[i].buttons.length>=4) {
          igamepad=i;
          break;
-       }
-     message("title",""+gp.id)  ;
-     setTimeout(function() {message("title","")},800);
+     }
+     message("title",""+gps[igamepad].id)  ;
+     setTimeout(function() {message("title","")},1800);
      document.body.style.backgroundColor="#333";
      gpok=true;
  }
@@ -38,7 +37,7 @@ function loop() {
  var aaxes=[100,100,100,100,100,100] ;
  for (var ia=0;ia<gp.axes.length&&ia<aaxes.length;ia++) 
   aaxes[ia]=Math.round((1+gp.axes[ia])*100);
- doEvent([aaxes,abuttons,-100,0]);
+ doEvent([aaxes,abuttons]);
 }
 
 
