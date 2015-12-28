@@ -22,14 +22,15 @@ Phase 1
 * sky
 * light
 * texture for batiments
-* collision with obstacle
-* multi-gamer : WebRTC/Websocket
+* collision detection by raytracing
 
 Phase 2
 -------
 
-* rmore realistic simlation 
-* physics engine integration
+* physics engine integration : physics.js / ammo.js ...
+* more realistic simulation: looping... 
+* mode beginer, extert, acrobatic...
+* multi-gamer : WebRTC/Websocket
 
 License
 =======
