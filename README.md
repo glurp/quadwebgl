@@ -1,4 +1,5 @@
-= quadwebgl
+Quadwebgl
+=========
 
 A webgl/gamepad game for quadcopter simulation.
 developped, tested on Chrome,
@@ -11,9 +12,11 @@ Objective : get real sensation, without webgl lagging....
 Simulate a real quadcopter (mode 2) radio commande, with a gamepad-compatible
 joystick.
 
-= TODO
+TODO
+====
 
-=== Phase 1
+Phase 1
+--------
 
 * quad dynamique orientation: composite
 * sky
@@ -22,12 +25,14 @@ joystick.
 * collision with obstacle
 * multi-gamer : WebRTC/Websocket
 
-=== Phase 2
+Phase 2
+-------
 
 * rmore realistic simlation 
 * physics engine integration
 
-= License
+License
+=======
 
 LGPL
 
