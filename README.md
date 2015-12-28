@@ -3,7 +3,7 @@ Quadwebgl
 
 A webgl/gamepad game for quadcopter simulation.
 developped, tested on Chrome,
-Should work with Firefox,Edge.
+Should work with Firefox,Edge (pure Threee.js application).
 
 Objective : get real sensation, without webgl lagging....
 
@@ -24,11 +24,12 @@ TODO
 Phase 1
 --------
 
-* quad dynamique orientation: composite
+* quad dynamique orientation
 * sky
 * light
 * texture for batiments
 * collision detection by raytracing
+* camera mode : fixed,...
 
 Phase 2
 -------
