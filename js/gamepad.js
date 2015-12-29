@@ -16,7 +16,7 @@ function loop() {
      message("title","No Gamepad...");
      var gps= (navigator.webkitGetGamepads && navigator.webkitGetGamepads()) || navigator.getGamepads();
      message("title","Number of Gamepad: "+ gps.length);   
-     igamepad=null;
+     igamepad=-1;
      for (var i=0;i<gps.length;i++)
        if (gps[i].axes && gps[i].buttons && 
           gps[i].axes.length>=4 && gps[i].buttons.length>=4 &&
@@ -24,11 +24,17 @@ function loop() {
          igamepad=i;
          break;
      }
-     if (! igamepad) { 
-       message("title","gamepad not recognized !!")  ;
+     if (igamepad==-1) { 
+       message("mes","gamepad not realy recognized !!")  ;
        igamepad=0;
-     } else
-       message("title",""+gps[igamepad].id, " mapping=", gps[igamepad].mapping)  ;
+       for (var i=0;i<gps.length;i++)
+         if (gps[i].axes && gps[i].buttons && 
+            gps[i].axes.length>=4 && gps[i].buttons.length>=4) {
+           igamepad=i;
+           break;
+       }
+     }
+     message("title",""+gps[igamepad].id, " mapping=", gps[igamepad].mapping)  ;
 
      setTimeout(function() {message("title","")},1800);
      document.body.style.backgroundColor="#333";
@@ -45,6 +51,11 @@ function loop() {
  var aaxes=[100,100,100,100,100,100] ;
  for (var ia=0;ia<gp.axes.length&&ia<aaxes.length;ia++) 
   aaxes[ia]=Math.round((1+gp.axes[ia])*100);
+ if (gp.mapping != "standard") {
+    var tmp=aaxes[2]
+    aaxes[2]=aaxes[3];
+    aaxes[3]=tmp;
+ }
  doEvent([aaxes,abuttons]);
 }
 
