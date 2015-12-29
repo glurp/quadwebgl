@@ -20,6 +20,8 @@ joystick.
 * Right joystick : forward/backward, left/right
 * button 0 : goto 0,0,0
 * button 1 : stop in-place ( speeds=0 )
+* button 2 : toggle camera view relative/fixe
+* button 10/11 : for fixed camera, set altitude +/-
 
 TODO
 ====
@@ -27,12 +29,9 @@ TODO
 Phase 1
 --------
 
-* quad dynamique orientation
 * sky
-* light
 * texture for batiments
-* collision detection by raytracing
-* camera mode : fixed,...
+* behavior realist on collision
 
 Phase 2
 -------
