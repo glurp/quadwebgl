@@ -41,32 +41,41 @@ function message(id) {
  if (node) node.innerHTML=str;
 }
 
-// store gamepad events in boutons[] and mouseX/Y/Z/R
+// store gamepad events in buttons[] and mouseX/Y/Z/R
 
 var mouseX = 0, mouseY = 0, mouseZ = 0, mouseR=0 ;
-var posx=0,posy=200,posz=0, vx=0,vy=0, vz=0;
+var posx=0,posy=20,posz=0, vx=0,vy=0, vz=0;
 var camera, scene;
 var webglRenderer;
+var modeCamera=true;
+var altitude=200;
 
 var ok=false;
 
-var boutons=[0,0,0,0,0,0,0,0,0,0,0,0];
+var buttons=[0,0,0,0,0,0,0,0,0,0,0,0];
 function doEvent(data) {
- // standard axes dispositions : canonical device, the "Standard Gamepad"
- // 0=>horzontal rotation,1=>updown 2=>left/right 3=>f/back (rc Mode 2)
+  // standard axes dispositions : canonical device, the "Standard Gamepad"
+  // 0=>horzontal rotation,1=>updown 2=>left/right 3=>f/back (rc Mode 2)
 
- var r=data[0][0]-100,
+  var r=data[0][0]-100,
      z=data[0][1]-100,
      y=data[0][3]-100,
      x=data[0][2]-100;
- boutons=data[1];
- mouseX = x;
- mouseY = y;   
- mouseZ = z;
- mouseR = r;
- if ( boutons[0]==1) {  posx=0; posy=100; posz=0; }
- if ( boutons[1]==1) {  vx=0; vy=0; vz=0;         }
- message("pos","Pos=",x,'/',y,'/',z,'R',r , "events=",JSON.stringify(data));
+  buttons=data[1];
+  mouseX = x;
+  mouseY = y;   
+  mouseZ = z;
+  mouseR = r;
+  if ( buttons[0]==1) {  posx=0; posy=100; posz=0; }
+  if ( buttons[1]==1) {  vx=0; vy=0; vz=0;         }
+  if (buttons[6]==1) {
+    modeCamera=!modeCamera;
+    message("pos","Mode camera subgestive=",modeCamera);
+    //altitude=500;
+  }
+  if (buttons[7]==1) altitude -= 4;
+  if (buttons[8]==1) altitude += 4;
+  message("pos","Pos=",x,'/',y,'/',z,'R',r , "   events=",JSON.stringify(data));
 }
 
 

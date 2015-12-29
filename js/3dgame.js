@@ -10,7 +10,7 @@ var init_game= function() {
     var subplayer;
     var windowHalfX = SCREEN_WIDTH / 2;
     var windowHalfY = SCREEN_HEIGHT  / 2;
-    
+    var PLAYER_SIZE=3;
     var K_LEFT=37;
     var K_RIGHT=39;
     var K_UP=38;
@@ -19,6 +19,8 @@ var init_game= function() {
     var K_DOWN=40;
     var currentlyPressedKeys={};
     var adir=0,vdir=0,dir=0,rad_dir=0;
+    var raycaster,direction,collision,collision_save ;
+    var floor;
 
 
     init_gamepad()
@@ -43,6 +45,10 @@ var init_game= function() {
       directionalLight.position.set( -800, 700, -800 ).normalize();
       scene.add( directionalLight );
 
+      var hemisphereLight= new THREE.HemisphereLight( 0xA0A0A0 ,0x303030, 0.1 ) 
+      scene.add( hemisphereLight );
+
+
       // renderer
       webglRenderer = new THREE.WebGLRenderer();
       webglRenderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
@@ -57,7 +63,7 @@ var init_game= function() {
 
     function createScene( ) {
       //========= Floor
-      addMesh(new THREE.CubeGeometry( 1000, 1, 1000), 
+      floor=addMesh(new THREE.CubeGeometry( 1000, 1, 1000), 
           1,
           0, 0,-20,
           0 ,0,0,
@@ -77,26 +83,32 @@ var init_game= function() {
 
       var mat=new THREE.MeshPhongMaterial( { color: 0xA0A0A0, specular: 0x555555, shininess: 30 , opacity: 0.6} );
       mat.transparent= true;
-      player = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 1 ),  mat );
-      var sub1 = new THREE.Mesh( new THREE.CubeGeometry( 6, 2, 6 ),  mat);
+      player = new THREE.Mesh( new THREE.BoxGeometry( 0, 0, 0 ),  mat );
+      var sub1 = new THREE.Mesh( new THREE.CubeGeometry( PLAYER_SIZE*2, 2, PLAYER_SIZE*2 ),  mat);
       player.add(sub1);
-
-      var a=[[-1,1,2,0x00FF00],[-1,-1,2,0x00FF00],[1,1,3,0xFF0055],[1,-1,3,0xFF0055]];
+      var r=PLAYER_SIZE/2;
+      var a=[[-1,1,r,0x00FF00],[-1,-1,r,0x00FF00],[1,1,r+1,0xFF0055],[1,-1,r+1,0xFF0055]];
       for (var i=0;i<a.length;i++) {
-         var sub2 = new THREE.Mesh( new THREE.CylinderGeometry( a[i][2], a[i][2] , 1),
+         var sub2 = new THREE.Mesh( new THREE.CylinderGeometry( a[i][2], a[i][2] , 1 , 10),
                       new THREE.MeshPhongMaterial( { 
                       color: a[i][3], 
                       specular: 0x555555, shininess: 30 , opacity: 0.7,transparent: true} ) );
-         sub2.position.set(a[i][0]*3,0,a[i][1]*3);
+         sub2.position.set(a[i][0]*r*2,0,a[i][1]*r*2);
          sub1.add(sub2);
       }
       subplayer=sub1;
       scene.add(player);
+
+      // ============= create raycster for collision detection
+
+      direction= new THREE.Vector3(0,0,0);
+      raycaster = new THREE.Raycaster(new THREE.Vector3(0,0,0),direction,1,50); // position/direction/min/max
+      collision=null;
     }
 
     function animate() {
-      requestAnimationFrame( animate );
       render();
+      requestAnimationFrame( animate );
     }
     function render() {
       
@@ -104,7 +116,7 @@ var init_game= function() {
       var ay=(mouseX*Math.sin(rad_dir))+(-mouseY*Math.sin(rad_dir+Math.PI/2.0));
       
       vx=(vx+ax/4000.0)*0.995;
-      vy=(vy+(-mouseZ-40)/6000.0)*0.95;
+      vy=(vy+(-mouseZ)/6000.0)*0.95;
       vz=(vz+ay/4000.0)*0.995;
       
       vdir=(vdir+(-mouseR)/1200.0)*0.95;        
@@ -122,30 +134,51 @@ var init_game= function() {
       
       // ================ Inclinaison selon accelerations
       
-      subplayer.rotation.z=-mouseX/600;
-      subplayer.rotation.x=-mouseY/600;
-      
-      // ================ Camera : subjective
-      if (boutons[6]==1) {
-        modeCamera=!modeCamera;
-        message("pos","Mode camera subgestive=",modeCamera);
-        altitude=500;
-      }
-      if (boutons[7]==1) altitude -= 1;
-      if (boutons[8]==1) altitude += 1;
+      subplayer.rotation.z=-mouseX/900;
+      subplayer.rotation.x=-mouseY/900;
+
+      // ================== Collision detections
+
+      direction.set(vx,vy,vz);
+      var v=direction.length();
+      if (v>0.01) {
+        direction.normalize();
+        raycaster.near=PLAYER_SIZE/2;
+        raycaster.far=max(PLAYER_SIZE*2,v);
+        raycaster.set( player.position, direction );	
+        player.visible=false;
+        var intersects = raycaster.intersectObjects( scene.children );
+        player.visible=true;
+
+        if (intersects.length>0 && intersects[0].object!=floor) {
+          if (collision) collision.material.color.set( collision_save );  
+	        collision=intersects[ 0 ].object
+          collision_save=collision.material.color.getHex();
+          collision.material.color.set( 0xff0000 );
+          vx=-vx;vy=-vy;vz=-vz;
+          // TODO : collision behavior : scratch or slide or bounce with:
+          //   intersects[0].face, .point .distance
+        } else {
+          if (collision) {
+            collision.material.color.set( collision_save );  
+            collision=null;
+          }
+        }
+      }    
+ 	     
+      // ================ Camera
+
       if (modeCamera) {
         var camx= posx + (40*Math.cos(-rad_dir));
         var camy= posy + 9 + 2*vy;
         var camz= posz + (40*Math.sin( rad_dir));
       } else {
-        var camx= 0;
-        var camy= altitude;
-        var camz= 0;
+        var camx= posx/2;
+        var camy= max(10,altitude);
+        var camz= posz/2;
       }
       camera.position.set(camx,camy,camz);
       camera.lookAt(player.position);
       webglRenderer.render( scene, camera );
     }
-    var modeCamera=true;
-    var altitude=500;
 }
