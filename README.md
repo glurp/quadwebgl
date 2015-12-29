@@ -7,6 +7,9 @@ Should work with Firefox,Edge (pure Threee.js application).
 
 Objective : get real sensation, without webgl lagging....
 
+Direct acces :
+https://rawgit.com/glurp/quadwebgl/master/index.html
+
 Gameplay
 --------
 
