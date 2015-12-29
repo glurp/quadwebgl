@@ -16,12 +16,20 @@ function loop() {
      message("title","No Gamepad...");
      var gps= (navigator.webkitGetGamepads && navigator.webkitGetGamepads()) || navigator.getGamepads();
      message("title","Number of Gamepad: "+ gps.length);   
+     igamepad=null;
      for (var i=0;i<gps.length;i++)
-       if (gps[i].axes && gps[i].buttons && gps[i].axes.length>=4 && gps[i].buttons.length>=4) {
+       if (gps[i].axes && gps[i].buttons && 
+          gps[i].axes.length>=4 && gps[i].buttons.length>=4 &&
+           gps[i].mapping=="standard") {
          igamepad=i;
          break;
      }
-     message("title",""+gps[igamepad].id)  ;
+     if (! igamepad) { 
+       message("title","gamepad not recognized !!")  ;
+       igamepad=0;
+     } else
+       message("title",""+gps[igamepad].id, " mapping=", gps[igamepad].mapping)  ;
+
      setTimeout(function() {message("title","")},1800);
      document.body.style.backgroundColor="#333";
      gpok=true;

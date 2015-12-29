@@ -75,18 +75,18 @@ var init_game= function() {
       
       // ================= Quadcopter
 
-      var mat=new THREE.MeshPhongMaterial( { color: 0xA0A0A0, specular: 0x555555, shininess: 30 , opacity: 0.9} );
-
+      var mat=new THREE.MeshPhongMaterial( { color: 0xA0A0A0, specular: 0x555555, shininess: 30 , opacity: 0.6} );
+      mat.transparent= true;
       player = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 1 ),  mat );
       var sub1 = new THREE.Mesh( new THREE.CubeGeometry( 6, 2, 6 ),  mat);
       player.add(sub1);
 
       var a=[[-1,1,2,0x00FF00],[-1,-1,2,0x00FF00],[1,1,3,0xFF0055],[1,-1,3,0xFF0055]];
       for (var i=0;i<a.length;i++) {
-         var sub2 = new THREE.Mesh( new THREE.CylinderGeometry( a[i][2], a[i][2] , 3),
+         var sub2 = new THREE.Mesh( new THREE.CylinderGeometry( a[i][2], a[i][2] , 1),
                       new THREE.MeshPhongMaterial( { 
                       color: a[i][3], 
-                      specular: 0x555555, shininess: 30 , opacity: 0.9} ) );
+                      specular: 0x555555, shininess: 30 , opacity: 0.7,transparent: true} ) );
          sub2.position.set(a[i][0]*3,0,a[i][1]*3);
          sub1.add(sub2);
       }
@@ -122,17 +122,30 @@ var init_game= function() {
       
       // ================ Inclinaison selon accelerations
       
-      subplayer.rotation.z=-mouseX/400;
-      subplayer.rotation.x=-mouseY/400;
+      subplayer.rotation.z=-mouseX/600;
+      subplayer.rotation.x=-mouseY/600;
       
       // ================ Camera : subjective
-      
-      var camx= posx + (40*Math.cos(-rad_dir));
-      var camy= posy + 9 + 2*vy;
-      var camz= posz + (40*Math.sin( rad_dir));
+      if (boutons[6]==1) {
+        modeCamera=!modeCamera;
+        message("pos","Mode camera subgestive=",modeCamera);
+        altitude=500;
+      }
+      if (boutons[7]==1) altitude -= 1;
+      if (boutons[8]==1) altitude += 1;
+      if (modeCamera) {
+        var camx= posx + (40*Math.cos(-rad_dir));
+        var camy= posy + 9 + 2*vy;
+        var camz= posz + (40*Math.sin( rad_dir));
+      } else {
+        var camx= 0;
+        var camy= altitude;
+        var camz= 0;
+      }
       camera.position.set(camx,camy,camz);
       camera.lookAt(player.position);
       webglRenderer.render( scene, camera );
     }
-
+    var modeCamera=true;
+    var altitude=500;
 }

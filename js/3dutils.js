@@ -2,9 +2,11 @@
 
 function min(a,b) { return a<=b ? a : b ;}
 function max(a,b) { return a>=b ? a : b ;}
-
+var PI=3.14159;
+function ar(min,max) {return(1.0+min+Math.random()*(max-min)) ;}
 function r(a) { return Math.round(a*10)/10.0 }
 function hypot(a,b,c) { return Math.sqrt(a*a+b*b+c*c) }
+
 function addMesh( geometry, scale, x, y, z, rx, ry, rz, material ) {
 
     mesh = new THREE.Mesh( geometry, material );
@@ -53,6 +55,5 @@ function makeText(x0,y0,z0,r,text,color,opacity,s,h) {
     textMesh1.rotation.y = (Math.PI*r)/180.0;
     scene.add(  textMesh1 );
 }
-var PI=3.14159;
-function ar(min,max) {return(1.0+min+Math.random()*(max-min)) ;}
+
 
