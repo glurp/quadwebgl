@@ -1,9 +1,11 @@
 Quadwebgl
 =========
 
-A webgl/gamepad game for quadcopter simulation.
-developped, tested on Chrome,
-Should work with Firefox,Edge (pure Threee.js application).
+A Webgl/Gamepad game for quadcopter simulation.
+developped, tested on Chrome,Firefox
+Should work with Edge (pure Threee.js application).
+
+Mobile version: todo :)
 
 Objective : get real sensation, without webgl lagging....
 
@@ -13,31 +15,36 @@ https://rawgit.com/glurp/quadwebgl/master/index.html
 Gameplay
 --------
 
-Simulate a real quadcopter (mode 2) radio commande, with a gamepad-compatible
-joystick.
+Simulate a real quadcopter (mode 2) radio commande, with a gamepad-compatible joystick.
 
 * Left  joystick : up/down , horizontal rotation
 * Right joystick : forward/backward, left/right
 * button 0 : goto 0,0,0
-* button 1 : stop in-place ( speeds=0 )
-* button 2 : toggle camera view relative/fixe
-* button 10/11 : for fixed camera, set altitude +/-
+* button 1 : stop mouvments ( speeds=0 )
+* button 2 : toggle camera view player-relative/fixe-position
+* button 7/8 : for fixed camera, set altitude +/-
 
 TODO
 ====
 
-Phase 1
+Phase 1 (current)
 --------
 
-* sky
+* nonlineare joysticks
 * texture for batiments
-* behavior realist on collision
+* sky
 
 Phase 2
 -------
 
+* shadow
+* mobile version
+* behavior more realist on collision
+
+Phase 3
+-------
+
 * physics engine integration : physics.js / ammo.js ...
-* more realistic simulation: looping... 
 * mode : beginer, expert, acrobatic...
 * multi-gamer : WebRTC/Websocket
 
