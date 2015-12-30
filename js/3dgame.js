@@ -77,7 +77,7 @@ var init_game= function() {
         
 
         
-      //makeText(-200,470,0,5,"0 88XX 8 8 B D WM",0xA0A0A0,0.9,70,40) ;
+      makeText(-200,470,0,5,"0 88XX 8 8 B D WM",0xA0A0A0,0.9,70,40) ;
       
       // ================= Quadcopter
 
