@@ -47,8 +47,10 @@ Phase 3
 * mode : beginer, expert, acrobatic...
 * multi-gamer : WebRTC/Websocket
 
-License
+Licenses
 =======
+Use: Three.js
+sounds from http://www.freesound.org/
 
-LGPL
+Sources: LGPL
 
