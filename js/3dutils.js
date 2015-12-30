@@ -57,4 +57,17 @@ function makeText(x0,y0,z0,r,text,color,opacity,s,h) {
     scene.add(  textMesh1 );
 }
 
+var source,audio,urlSound="";
+function soundInit() {
+   audio = document.createElement('audio');
+   source = document.createElement('source');
+}
+function soundPlay(url) {
+  if (url!=urlSound) {
+      source.src = url;
+      audio.appendChild(source);
+      urlSound=url;
+  }
+  audio.play();  
+}
 

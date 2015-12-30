@@ -23,7 +23,8 @@ var init_game= function() {
     var floor;
     var nbrender=0;
 
-    init_gamepad()
+    init_gamepad();
+    soundInit();
     init();
     animate();
 
@@ -32,9 +33,11 @@ var init_game= function() {
       // camera
       camera = new THREE.PerspectiveCamera( 75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 100000 );
       camera.position.z = 75;
+			camera.add( new THREE.AudioListener() );
 
       //scene
       scene = new THREE.Scene();
+      //scene.fog = new THREE.FogExp2( 0x404040, 0.0025 );
 
       // lights
       var ambient = new THREE.AmbientLight( 0xA0A0A0 );
@@ -81,7 +84,9 @@ var init_game= function() {
       
       // ================= Quadcopter
 
-      var mat=new THREE.MeshPhongMaterial( { color: 0xA0A0A0, specular: 0x555555, shininess: 30 , opacity: 0.6} );
+      var mat=new THREE.MeshPhongMaterial( { 
+        color: 0xA0A0A0, specular: 0x555555, shininess: 30 , opacity: 0.6
+      } );
       mat.transparent= true;
       player = new THREE.Mesh( new THREE.BoxGeometry( 0, 0, 0 ),  mat );
       var sub1 = new THREE.Mesh( new THREE.CubeGeometry( PLAYER_SIZE*2, 2, PLAYER_SIZE*2 ),  mat);
@@ -146,7 +151,7 @@ var init_game= function() {
       if (v>0.01 && (nbrender%4)==0) {
         direction.normalize();
         raycaster.near=PLAYER_SIZE/2;
-        raycaster.far=max(PLAYER_SIZE*2,v);
+        raycaster.far=max(PLAYER_SIZE*2,v*4);
         raycaster.set( player.position, direction );	
         player.visible=false;
         var intersects = raycaster.intersectObjects( scene.children , false );
@@ -160,6 +165,7 @@ var init_game= function() {
           vx=-vx;vy=-vy;vz=-vz;
           // TODO : collision behavior : scratch or slide or bounce with:
           //   intersects[0].face, .point .distance
+          soundPlay("assets/72990__zgump__kick-pack-0405.wav")
         } else {
           if (collision) {
             collision.material.color.set( collision_save );  
