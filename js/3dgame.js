@@ -21,7 +21,7 @@ var init_game= function() {
     var adir=0,vdir=0,dir=0,rad_dir=0;
     var raycaster,direction,collision,collision_save ;
     var floor;
-
+    var nbrender=0;
 
     init_gamepad()
     init();
@@ -42,12 +42,12 @@ var init_game= function() {
 
       // more lights
       var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+      directionalLight.castShadow = true;
       directionalLight.position.set( -800, 700, -800 ).normalize();
       scene.add( directionalLight );
 
-      var hemisphereLight= new THREE.HemisphereLight( 0xA0A0A0 ,0x303030, 0.1 ) 
-      scene.add( hemisphereLight );
-
+      //var hemisphereLight= new THREE.HemisphereLight( 0xA0A0A0 ,0x303030, 0.1 ) 
+      //scene.add( hemisphereLight );
 
       // renderer
       webglRenderer = new THREE.WebGLRenderer();
@@ -97,12 +97,14 @@ var init_game= function() {
          sub1.add(sub2);
       }
       subplayer=sub1;
+		  player.castShadow = true;
+			player.receiveShadow = true;
       scene.add(player);
 
       // ============= create raycster for collision detection
 
       direction= new THREE.Vector3(0,0,0);
-      raycaster = new THREE.Raycaster(new THREE.Vector3(0,0,0),direction,1,50); // position/direction/min/max
+      raycaster = new THREE.Raycaster(new THREE.Vector3(0,0,0),direction,1,50); // position/direction/near/far
       collision=null;
     }
 
@@ -113,11 +115,11 @@ var init_game= function() {
     function render() {
       
       var ax=(mouseX*Math.cos(rad_dir))+(-mouseY*Math.cos(rad_dir+Math.PI/2.0));
-      var ay=(mouseX*Math.sin(rad_dir))+(-mouseY*Math.sin(rad_dir+Math.PI/2.0));
+      var az=(mouseX*Math.sin(rad_dir))+(-mouseY*Math.sin(rad_dir+Math.PI/2.0));
       
       vx=(vx+ax/4000.0)*0.995;
       vy=(vy+(-mouseZ)/6000.0)*0.95;
-      vz=(vz+ay/4000.0)*0.995;
+      vz=(vz+az/4000.0)*0.995;
       
       vdir=(vdir+(-mouseR)/1200.0)*0.95;        
 
@@ -141,13 +143,13 @@ var init_game= function() {
 
       direction.set(vx,vy,vz);
       var v=direction.length();
-      if (v>0.01) {
+      if (v>0.01 && (nbrender%4)==0) {
         direction.normalize();
         raycaster.near=PLAYER_SIZE/2;
         raycaster.far=max(PLAYER_SIZE*2,v);
         raycaster.set( player.position, direction );	
         player.visible=false;
-        var intersects = raycaster.intersectObjects( scene.children );
+        var intersects = raycaster.intersectObjects( scene.children , false );
         player.visible=true;
 
         if (intersects.length>0 && intersects[0].object!=floor) {
@@ -165,7 +167,7 @@ var init_game= function() {
           }
         }
       }    
- 	     
+ 	    nbrender++;
       // ================ Camera
 
       if (modeCamera) {

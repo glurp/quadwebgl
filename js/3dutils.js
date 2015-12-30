@@ -29,6 +29,7 @@ function addbat(x,z,  w,l,h,color,opacity) {
       x+w/2, h/2,z+h/2,
       0 ,ar(-1.1,1.1),0,
       mat); 
+  b.receiveShadow = true;
   return(b);
 }
 function makeText(x0,y0,z0,r,text,color,opacity,s,h) {
