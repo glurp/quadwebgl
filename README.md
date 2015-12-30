@@ -2,8 +2,7 @@ Quadwebgl
 =========
 
 A Webgl/Gamepad game for quadcopter simulation.
-developped, tested on Chrome,Firefox
-Should work with Edge (pure Threee.js application).
+developped, tested on Chrome,Firefox.
 
 Mobile version: todo :)
 
