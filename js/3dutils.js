@@ -41,12 +41,14 @@ function makeText(x0,y0,z0,r,text,color,opacity,s,h) {
       bevelThickness: 10,
       bevelSize: 0.5,
       bevelEnabled: true,
-      bend: false,
+      bend: true,
       material: 0,
       extrudeMaterial: 1
     });
     var textMesh1 = new THREE.Mesh( textGeo ,  new THREE.MeshBasicMaterial( { 
-        color: color, opacity: opacity, 
+        color: color, specular: 0xE0E0E0, shininess: 100 ,
+        opacity: opacity, 
+        reflectivity: 10,
         transparent: ((opacity==1.0) ? false : true) 
     }));
     textMesh1.position.x = x0;

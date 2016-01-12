@@ -29,7 +29,7 @@ TODO
 Phase 1 (current)
 --------
 
-* nonlineare joysticks
+* multi-gamepad models !
 * texture for batiments
 * sky
 

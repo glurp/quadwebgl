@@ -22,7 +22,7 @@ var init_game= function() {
     var raycaster,direction,collision,collision_save ;
     var floor;
     var nbrender=0;
-
+    var directionalLight;
     init_gamepad();
     soundInit();
     init();
@@ -44,13 +44,13 @@ var init_game= function() {
       scene.add( ambient );
 
       // more lights
-      var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+      directionalLight = new THREE.DirectionalLight( 0xFFFFFF );
       directionalLight.castShadow = true;
-      directionalLight.position.set( -800, 700, -800 ).normalize();
+      directionalLight.position.set( -800, -700, -800 ).normalize();
       scene.add( directionalLight );
 
-      //var hemisphereLight= new THREE.HemisphereLight( 0xA0A0A0 ,0x303030, 0.1 ) 
-      //scene.add( hemisphereLight );
+      var hemisphereLight= new THREE.HemisphereLight( 0xA0A0A0 ,0x303030, 0.1 ) 
+      scene.add( hemisphereLight );
 
       // renderer
       webglRenderer = new THREE.WebGLRenderer();
@@ -66,19 +66,23 @@ var init_game= function() {
 
     function createScene( ) {
       //========= Floor
-      floor=addMesh(new THREE.CubeGeometry( 1000, 1, 1000), 
+      floor=addMesh(new THREE.CubeGeometry( 6000, 100, 6000), 
           1,
-          0, 0,-20,
+          0, -50,-20,
           0 ,0,0,
           new THREE.MeshPhongMaterial( { color: 0x202020, specular: 0x555555, shininess: 30 , opacity: 0.3} )); 
           
       // ======================== buildings, en vracs
       
-      for (var i=0;i<70;i++)   
-        addbat(ar(-400,400),ar(-400,+400),     30,30,ar(30,80), ar(-32000,32000),0.9);
+      for (var i=0;i<50;i++)   
+        addbat(ar(-300,400),ar(-400,+400),     30,ar(30,50),ar(40,100), ar(-32000,32000),0.9);
       addbat(0,0,     1,1,4, 0xFFAAAA,1.0);
         
 
+      for (var i=0;i<4;i++)   
+        makeText(-400+170*i,-300,-50, 90,"0",0xA0A070,1,100,30) ;
+      for (var i=0;i<4;i++)   
+        makeText(-400+170*i,-400,-20, 90,"#",0xA0A070,1,100,1) ;
         
       makeText(-200,470,0,5,"0 88XX 8 8 B D WM",0xA0A0A0,0.9,70,40) ;
       
@@ -187,6 +191,7 @@ var init_game= function() {
       }
       camera.position.set(camx,camy,camz);
       camera.lookAt(player.position);
+      directionalLight.position.set(posx,posy+30,posz);
       webglRenderer.render( scene, camera );
     }
 }

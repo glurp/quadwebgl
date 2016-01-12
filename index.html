@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <title>Quad</title>
 <style>
 body  {
@@ -9,7 +10,8 @@ body  {
     overflow:hidden;
 }
 * { margin:0px;}
-div {font-size: 10px;}
+div.mess {font-size: 14px;margin-left: 14px;}
+div.messa {font-size: 10px;margin-left: 24px;}
 </style>
 </head>
 
@@ -19,10 +21,14 @@ div {font-size: 10px;}
 <div id='cv'  style="width:100%; height:600px; background: #EEE;">
 </div>
 <hr>
-<div id='title'>--</div>
-<div id='typ'>--</div>
-<div id='pos'>--</div>
-<div id='mes'>--</div>
+<div id='title' class="mess">--</div>
+<div id='typ' class="mess">--</div>
+<div id='typ1' class="messa">--</div>
+<div id='typ2' class="messa">--</div>
+<div id='typ3' class="messa">--</div>
+<div id='typ4' class="messa">--</div>
+<div id='pos' class="mess">--</div>
+<div id='mes' class="mess">--</div>
 </body>
 <!-- ======================== Evenements Joystick ====================== -->
 <script src="js/gamepad.js"></script>
@@ -54,16 +60,21 @@ var modeCamera=true;
 var altitude=200;
 
 var ok=false;
-
+function eal(m,x) { 
+  var a=x/100.0;
+  var y=(a*a*a*a*a+a/2)*2.0
+  if (m!=0)message("typ"+m,"x=",x," a=",a,"y=",y," result=",y*100);
+  return y*100 ;
+}
 var buttons=[0,0,0,0,0,0,0,0,0,0,0,0];
 function doEvent(data) {
   // standard axes dispositions : canonical device, the "Standard Gamepad"
   // 0=>horzontal rotation,1=>updown 2=>left/right 3=>f/back (rc Mode 2)
 
   var r=data[0][0]-100,
-     z=data[0][1]-100,
-     y=data[0][3]-100,
-     x=data[0][2]-100;
+     z=eal(1,data[0][1]-100),
+     y=eal(2,data[0][3]-100),
+     x=eal(3,data[0][2]-100);
   buttons=data[1];
   mouseX = x;
   mouseY = y;   
