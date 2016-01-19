@@ -86,6 +86,15 @@ var init_game= function() {
         
       makeText(-200,470,0,5,"0 88XX 8 8 B D WM",0xA0A0A0,0.9,70,40) ;
       
+      for (var i=0;i<8;i++) {
+        var r=45*i;
+        var rd=(Math.PI*r)/180.0;
+        x=300*Math.cos(rd);
+        y=300*Math.sin(rd);
+        var h=200;
+        makeText(500+x,400+y,h,-r,"0",0xFFA0A0,0.9,100,3) ;
+      }
+      
       // ================= Quadcopter
 
       var mat=new THREE.MeshPhongMaterial( { 
@@ -130,7 +139,7 @@ var init_game= function() {
       vy=(vy+(-mouseZ)/6000.0)*0.95;
       vz=(vz+az/4000.0)*0.995;
       
-      vdir=(vdir+(-mouseR)/1200.0)*0.95;        
+      vdir=(vdir+(-mouseR)/1600.0)*0.95;        
 
       posx+=vx;
       posy=max(1,posy+vy);

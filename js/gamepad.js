@@ -50,9 +50,10 @@ function loop() {
  for (var ia=0;ia<gp.axes.length&&ia<aaxes.length;ia++) 
   aaxes[ia]=Math.round((1+gp.axes[ia])*100);
  if (gp.mapping != "standard") {
-    var tmp=aaxes[2]
+    //aaxes[3]=aaxes[3]
+    aaxes[0]=aaxes[1];
+    aaxes[1]=aaxes[2];
     aaxes[2]=aaxes[4];
-    //aaxes[3]=tmp;
  }
  doEvent([aaxes,abuttons]);
 }
