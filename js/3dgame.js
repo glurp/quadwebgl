@@ -71,7 +71,8 @@ var init_game= function() {
           0, -50,-20,
           0 ,0,0,
           new THREE.MeshPhongMaterial( { color: 0x202020, specular: 0x555555, shininess: 30 , opacity: 0.3} )); 
-          
+      floor.receiveShadow = true;
+      
       // ======================== buildings, en vracs
       
       for (var i=0;i<50;i++)   
@@ -115,8 +116,8 @@ var init_game= function() {
          sub1.add(sub2);
       }
       subplayer=sub1;
-		  player.castShadow = true;
-			player.receiveShadow = true;
+	  player.castShadow = true;
+	  subplayer.castShadow = true;
       scene.add(player);
 
       // ============= create raycster for collision detection
@@ -200,7 +201,7 @@ var init_game= function() {
       }
       camera.position.set(camx,camy,camz);
       camera.lookAt(player.position);
-      directionalLight.position.set(posx,posy+30,posz);
+      directionalLight.position.set(posx+(80*Math.cos(-rad_dir)),posy+30,posz+(80*Math.sin( rad_dir)));
       webglRenderer.render( scene, camera );
     }
 }
